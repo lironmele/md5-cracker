@@ -82,8 +82,3 @@ class Client(socket.socket):
 
     def found(self):
         pass
-
-class MD5(RangeDivider.Range):
-    def __init__(self, md5, start='aaaaaa', stop='zzzzzz', range_count=10):
-        super().__init__(start, stop, range_count)
-        self.md5 = md5

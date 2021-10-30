@@ -1,10 +1,11 @@
 import BaseAscii
 
 class Range:
-    def __init__(self, start='aaaaaa', stop='zzzzzz', range_count=10):
+    def __init__(self, md5="", start='aaaaaa', stop='zzzzzz', range_count=10):
         self.start = BaseAscii.BaseAscii(start)
         self.stop = BaseAscii.BaseAscii(stop)
         self.range_count = range_count
+        self.md5 = md5
         self.ranges = []
         if self.range_count != 1:
             self.ranges = self // self.range_count
@@ -32,12 +33,12 @@ class Range:
             start_part = BaseAscii.BaseAscii(self.start+(i*count_per_part))
             stop_part = BaseAscii.BaseAscii(self.start+((i+1)*count_per_part))
 
-            ranges.append(Range(start_part.string, stop_part.string, 1))
+            ranges.append(Range(self.md5, start_part.string, stop_part.string, 1))
 
         start_part = BaseAscii.BaseAscii(self.start+((x-1)*count_per_part))
         stop_part = BaseAscii.BaseAscii(self.stop.string)
 
-        ranges.append(Range(start_part.string, stop_part.string, 1))
+        ranges.append(Range(self.md5, start_part.string, stop_part.string, 1))
 
         return ranges
 
