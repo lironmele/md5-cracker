@@ -1,5 +1,6 @@
 import socket
 import threading
+import hashlib
 from typing import List
 
 import BaseAscii
@@ -52,6 +53,13 @@ class Server:
                     return self.get_range(r)
             return urange
 
+    def found(self, md5, password):
+        hashed = hashlib.md5(password.encode()).hexdigest()
+        if hashed == md5:
+            for c in self.clients:
+                if c.md5 == md5:
+                    c.found()
+
     def handle_clients(self):
         pass
 
@@ -76,4 +84,7 @@ class Client(socket.socket):
         return copy
 
     def communicate(self):
+        pass
+
+    def found(self):
         pass
