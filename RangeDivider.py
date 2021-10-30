@@ -7,8 +7,8 @@ class Range:
         self.range_count = range_count
         self.ranges = []
         if self.range_count != 1:
-            # self.ranges = self.div(self.range_count)
             self.ranges = self // self.range_count
+        self.taken = False
 
     def __str__(self) -> str:
         string = f"start: {self.start.string}, stop: {self.stop.string}, count: {self.range_count}"
