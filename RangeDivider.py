@@ -10,6 +10,9 @@ class Range:
             self.ranges = self // self.range_count
         self.taken = False
 
+    def __bool__(self):
+        return self.taken
+
     def __str__(self) -> str:
         string = f"start: {self.start.string}, stop: {self.stop.string}, count: {self.range_count}"
         
