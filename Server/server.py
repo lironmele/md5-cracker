@@ -57,7 +57,7 @@ class Server:
         hashed = hashlib.md5(password.encode()).hexdigest()
         if hashed == md5:
             for c in self.clients:
-                if c.md5 == md5:
+                if c.range.md5 == md5:
                     c.found()
 
 class Client(socket.socket):
@@ -67,7 +67,6 @@ class Client(socket.socket):
         self.c_id = kwargs["c_id"]
         self.manager: Server = kwargs["manager"]
         self.range = kwargs["range"]
-        self.md5 = ""
         self.searching = False
 
     @classmethod
