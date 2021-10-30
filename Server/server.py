@@ -60,12 +60,6 @@ class Server:
                 if c.md5 == md5:
                     c.found()
 
-    def handle_clients(self):
-        pass
-
-    def send_horray(self):
-        pass
-
 class Client(socket.socket):
     def __init__(self, *args, **kwargs) -> None:
         super(Client, self).__init__(*args, **kwargs)
@@ -88,3 +82,8 @@ class Client(socket.socket):
 
     def found(self):
         pass
+
+class MD5(RangeDivider.Range):
+    def __init__(self, md5, start='aaaaaa', stop='zzzzzz', range_count=10):
+        super().__init__(start, stop, range_count)
+        self.md5 = md5
