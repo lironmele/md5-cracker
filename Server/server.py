@@ -40,7 +40,8 @@ class Server:
 
         self.clients.append(client)
 
-        client.communicate()
+        while True:
+            client.communicate()
 
     def get_range(self, urange=None):
         if urange == None:
@@ -77,7 +78,19 @@ class Client(socket.socket):
         return copy
 
     def communicate(self):
-        pass
+        if not self.searching:
+            self.send(self.manager.get_range().encode())
+        else:
+            message = self.recv(1024).decode()
+            
+            message = message.split(',')
+            
+            if message[1] == 'true':
+                self.manager.found(message[2], message[3])
+            else:
+                pass
+
+            self.searching = False
 
     def found(self):
         pass
