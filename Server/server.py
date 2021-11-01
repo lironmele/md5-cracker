@@ -93,4 +93,4 @@ class Client(socket.socket):
             self.searching = False
 
     def found(self):
-        pass
+        self.send(f"finish,{self.range.md5}".encode())
