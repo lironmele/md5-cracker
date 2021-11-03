@@ -3,16 +3,18 @@ import threading
 import hashlib
 from typing import List
 
-import BaseAscii
-import RangeDivider
+print(__package__)
+
+from ..Utility.RangeDivider import Range
 
 ip = "0.0.0.0"
 port = 13370
+test = '9dcf6acc37500e699f572645df6e87fc'
 
 class Server:
     def __init__(self):
         self.clients = []
-        self.ranges = []
+        self.ranges = [Range(md5=test)]
         self.soc = socket.socket()
         self.id_count = 1
 
