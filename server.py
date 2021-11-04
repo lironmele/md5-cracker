@@ -12,9 +12,10 @@ test = '9dcf6acc37500e699f572645df6e87fc'
 class Server:
     def __init__(self):
         self.clients = []
-        self.ranges = [Range(md5=test)]
+        self.ranges = []
         self.soc = socket.socket()
-        self.id_count = 1
+    def add_new_range(self, start, stop, md5):
+        self.ranges = [*self.ranges, *get_ranges(start, stop, 100, md5)]
 
     def listen_for_new_connections(self):
         while True:
@@ -43,16 +44,11 @@ class Server:
         while True:
             client.communicate()
 
-    def get_range(self, urange=None):
-        if urange == None:
-            for r in self.ranges:
-                if not r:
-                    return self.get_range(r)
+    def get_range(self):
+        if len(self.ranges) > 0:
+            return self.ranges.pop(0)
         else:
-            for r in urange.ranges:
-                if not r:
-                    return self.get_range(r)
-            return urange
+            return None
 
     def found(self, md5, password):
         hashed = hashlib.md5(password.encode()).hexdigest()
@@ -79,7 +75,13 @@ class Client(socket.socket):
 
     def communicate(self):
         if not self.searching:
-            self.send(self.manager.get_range().encode())
+            nrange = self.manager.get_range()
+            
+            while not nrange:
+                nrange = self.manager.get_range()
+
+            self.send(f"{nrange[0]},{nrange[1]},{nrange[2]}".encode())
+            self.searching = nrange[2]
         else:
             message = self.recv(1024).decode()
             
