@@ -58,6 +58,16 @@ class Server:
                 if c.searching == md5:
                     c.found(md5)
 
+    def handle_user_input(self):
+        while True:
+            input("Press enter to input more ranges")
+            start = input("\tEnter start: ")
+            stop = input("\tEnter stop: ")
+            md5 = input("\tEnter MD5: ")
+            self.add_new_range(start, stop, md5)
+            print(f"{start},{stop},{md5} added to the queue")
+            print()
+
 class Client(socket.socket):
     def __init__(self, *args, **kwargs) -> None:
         self.c_id = kwargs.pop("c_id")
