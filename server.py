@@ -18,6 +18,9 @@ class Server:
         self.ranges = [*self.ranges, *get_ranges(start, stop, 100, md5)]
 
     def listen_for_new_connections(self):
+        self.soc.bind(('localhost', 13370))
+        self.soc.listen()
+
         while True:
             client, client_addr = self.soc.accept()
 
@@ -36,8 +39,8 @@ class Server:
             self.id_count += 1
 
     def add_new_patz(self, c_id, client_addr):
-        client = Client(c_id=c_id, manager=self, range=self.get_range())
-        client.connect((client_addr, port+c_id))
+        client = Client(c_id=c_id, manager=self)
+        client.connect((client_addr[0], port+c_id))
 
         self.clients.append(client)
 
@@ -54,17 +57,16 @@ class Server:
         hashed = hashlib.md5(password.encode()).hexdigest()
         if hashed == md5:
             for c in self.clients:
-                if c.range.md5 == md5:
-                    c.found()
+                if c.searching == md5:
+                    c.found(md5)
 
 class Client(socket.socket):
     def __init__(self, *args, **kwargs) -> None:
-        super(Client, self).__init__(*args, **kwargs)
-        
-        self.c_id = kwargs["c_id"]
-        self.manager: Server = kwargs["manager"]
-        self.range = kwargs["range"]
+        self.c_id = kwargs.pop("c_id")
+        self.manager: Server = kwargs.pop("manager")
         self.searching = False
+        
+        super(Client, self).__init__(*args, **kwargs)
 
     @classmethod
     def copy(cls, sock):
@@ -86,7 +88,8 @@ class Client(socket.socket):
             message = self.recv(1024).decode()
             
             message = message.split(',')
-            
+            print(f'got {message}')
+
             if message[1] == 'true':
                 self.manager.found(message[2], message[3])
             else:
@@ -94,5 +97,5 @@ class Client(socket.socket):
 
             self.searching = False
 
-    def found(self):
-        self.send(f"finish,{self.range.md5}".encode())
+    def found(self, md5):
+        self.send(f"finish,{md5}".encode())
