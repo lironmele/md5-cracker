@@ -1,4 +1,4 @@
-def get_ranges(start, stop, n):
+def get_ranges(start, stop, n, md5):
 	start_num = str_to_num(start)
 	stop_num = str_to_num(stop)
 
@@ -9,7 +9,7 @@ def get_ranges(start, stop, n):
 		start_result = num_to_str(round(start_num + division * i), len(start))
 		stop_result = num_to_str(round(start_num + division * (i + 1)), len(start))
 		
-		ranges.append((start_result, stop_result))
+		ranges.append((start_result, stop_result, md5))
 
 	return ranges
 
