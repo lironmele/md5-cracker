@@ -1,13 +1,11 @@
 import socket
 import threading
-import hashlib
 from typing import List
 
-from range_conversion import str_to_num, num_to_str, get_ranges
+import range_conversion
 
 ip = "0.0.0.0"
 port = 13370
-test = '9dcf6acc37500e699f572645df6e87fc'
 
 class Server:
     def __init__(self):
@@ -15,7 +13,7 @@ class Server:
         self.ranges = []
         self.soc = socket.socket()
     def add_new_range(self, start, stop, md5):
-        self.ranges = [*self.ranges, *get_ranges(start, stop, 100, md5)]
+        self.ranges = [*self.ranges, *range_conversion.get_ranges(start, stop, 100, md5)]
 
     def listen_for_new_connections(self):
         self.soc.bind(('localhost', 13370))
