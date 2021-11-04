@@ -3,9 +3,7 @@ import threading
 import hashlib
 from typing import List
 
-print(__package__)
-
-from ..Utility.RangeDivider import Range
+from range_conversion import str_to_num, num_to_str, get_ranges
 
 ip = "0.0.0.0"
 port = 13370
