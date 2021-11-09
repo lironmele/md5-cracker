@@ -34,6 +34,14 @@ class Client:
                 # check if it's mine
                 # celebrate
 
+    def add_new_range(self, start, stop, md5):
+        ranges = range_conversion.get_ranges(start, stop, 10, md5)
+
+        for r in ranges:
+            # create new thread
+            # give it a way to alert if found
+            pass
+
 class Cracker:
     def __init__(self):
         self.stop = False
