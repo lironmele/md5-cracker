@@ -1,5 +1,6 @@
 import socket
 import threading
+import range_conversion
 
 class Client:
     def __init__(self):
@@ -40,7 +41,10 @@ class Client:
         for r in ranges:
             # create new thread
             # give it a way to alert if found
-            pass
+            threading.Thread(target=self.cracker.start, args=(r[0], r[1], r[2], self.found)).start()
+
+    def found(self, md5, password):
+        self.server.send(f"found,{self.id},{md5},{password}".encode())
 
 class Cracker:
     def __init__(self):
