@@ -35,8 +35,8 @@ class Client:
 
             elif len(message) == 2:
                 print(f"Got finish message")
-                # check if it's mine
-                # celebrate
+                if message[1] == self.cracker.md5:
+                    pass
 
     def add_new_range(self, start, stop, md5):
         self.cracker.clear()
@@ -56,8 +56,11 @@ class Client:
 class Cracker:
     def __init__(self):
         self.stop = False
+        self.md5 = ''
 
     def crack(self, start, stop, md5, found):
+        self.md5 = md5
+
         current = start
         current_num = range_conversion.str_to_num(start)
         padding = len(start)
