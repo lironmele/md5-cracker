@@ -17,7 +17,7 @@ class Client:
         self.id = int(soc.recv(1024).decode())
         self.soc.bind(('localhost', 13370+self.id))
         self.soc.listen()
-        self.server = self.soc.accept()
+        self.server, _ = self.soc.accept()
         
     def talk_with_server(self):
         while True:
