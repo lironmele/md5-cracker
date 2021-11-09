@@ -46,12 +46,16 @@ class Client:
         for r in ranges:
             # create new thread
             # give it a way to alert if found
+            # and a way to alert if it didn't
             print(f"Start range {r[0]}-{r[1]}")
-            threading.Thread(target=self.cracker.crack, args=(r[0], r[1], r[2], self.found)).start()
+            threading.Thread(target=self.cracker.crack, args=(r[0], r[1], r[2], self.found, self.failed)).start()
 
     def found(self, md5, password):
         print(f"Found password {password}")
         self.server.send(f"{self.id},true,{md5},{password}".encode())
+
+    def failed(self, md5):
+        self.server.send(f"{self.id},false,{md5},".encode())
 
 class Cracker:
     def __init__(self):
@@ -59,7 +63,7 @@ class Cracker:
         self.md5 = ''
         self.thread_count = 0
 
-    def crack(self, start, stop, md5, found):
+    def crack(self, start, stop, md5, found, failed):
         self.thread_count += 1
 
         self.md5 = md5
@@ -77,6 +81,10 @@ class Cracker:
                 current = range_conversion.num_to_str(current_num, padding)
         
         self.thread_count -= 1
+
+        if self.thread_count == 0:
+            failed(self.md5)
+
     def clear(self):
         self.stop = True
         while self.thread_count > 0:
