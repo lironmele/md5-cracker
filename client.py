@@ -91,3 +91,11 @@ class Cracker:
         while self.thread_count > 0:
             pass
         self.stop = False
+
+def main():
+    client = Client()
+    client.init_connection('localhost', 13370)
+    client.talk_with_server()
+
+if __name__ == '__main__':
+    main()
