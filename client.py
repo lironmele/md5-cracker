@@ -2,7 +2,6 @@ import socket
 import threading
 import range_conversion
 import hashlib
-import time
 
 class Client:
     def __init__(self):
@@ -36,7 +35,8 @@ class Client:
             elif len(message) == 2:
                 print(f"Got finish message")
                 if message[1] == self.cracker.md5:
-                    pass
+                    self.cracker.clear()
+                    # Celebrate
 
     def add_new_range(self, start, stop, md5):
         self.cracker.clear()
@@ -57,8 +57,11 @@ class Cracker:
     def __init__(self):
         self.stop = False
         self.md5 = ''
+        self.thread_count = 0
 
     def crack(self, start, stop, md5, found):
+        self.thread_count += 1
+
         self.md5 = md5
 
         current = start
@@ -72,8 +75,10 @@ class Cracker:
             else:
                 current_num += 1
                 current = range_conversion.num_to_str(current_num, padding)
-
+        
+        self.thread_count -= 1
     def clear(self):
         self.stop = True
-        time.sleep(1)
+        while self.thread_count > 0:
+            pass
         self.stop = False
