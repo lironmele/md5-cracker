@@ -1,6 +1,7 @@
 import socket
 import threading
 import range_conversion
+import hashlib
 
 class Client:
     def __init__(self):
@@ -51,4 +52,14 @@ class Cracker:
         self.stop = False
 
     def crack(self, start, stop, md5, found):
-        pass
+        current = start
+        current_num = range_conversion.str_to_num(start)
+        padding = len(start)
+        
+        while not self.stop and start != stop:
+            if hashlib.md5(current.encode()).hexdigest() == md5:
+                found(md5, current)
+                return
+            else:
+                current_num += 1
+                current = range_conversion.num_to_str(current_num, padding)
