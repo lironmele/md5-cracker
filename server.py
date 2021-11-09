@@ -61,7 +61,7 @@ class Server:
             return
 
         for n in range(len(self.ranges)):
-            if self.ranges[n][2] == md5:
+            if self.ranges[n][1] == md5:
                 self.ranges.pop(n)
 
         for c in self.clients:
