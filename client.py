@@ -42,9 +42,11 @@ class Client:
         for r in ranges:
             # create new thread
             # give it a way to alert if found
+            print(f"Start range {r[0]}-{r[1]}")
             threading.Thread(target=self.cracker.crack, args=(r[0], r[1], r[2], self.found)).start()
 
     def found(self, md5, password):
+        print(f"Found password {password}")
         self.server.send(f"found,{self.id},{md5},{password}".encode())
 
 class Cracker:
