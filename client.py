@@ -5,6 +5,7 @@ class Client:
     def __init__(self):
         self.server = None
         self.soc = socket.socket()
+        self.cracker = Cracker()
         self.id = None
 
     def init_connection(self, ip, port):
@@ -32,3 +33,10 @@ class Client:
                 print(f"Got finish message")
                 # check if it's mine
                 # celebrate
+
+class Cracker:
+    def __init__(self):
+        self.stop = False
+
+    def start(self, start, stop, md5, found):
+        pass
