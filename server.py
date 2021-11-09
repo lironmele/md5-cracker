@@ -1,3 +1,4 @@
+import hashlib
 import socket
 import threading
 from typing import List
@@ -12,6 +13,8 @@ class Server:
         self.clients = []
         self.ranges = []
         self.soc = socket.socket()
+        self.id_count = 1
+
     def add_new_range(self, start, stop, md5):
         self.ranges = [*self.ranges, *range_conversion.get_ranges(start, stop, 100, md5)]
 
@@ -53,10 +56,16 @@ class Server:
 
     def found(self, md5, password):
         hashed = hashlib.md5(password.encode()).hexdigest()
-        if hashed == md5:
-            for c in self.clients:
-                if c.searching == md5:
-                    c.found(md5)
+        if hashed != md5:
+            return
+
+        for n in range(len(self.ranges)):
+            if self.ranges[n][2] == md5:
+                self.ranges.pop(n)
+
+        for c in self.clients:
+            if c.searching == md5:
+                c.found(md5)
 
     def handle_user_input(self):
         while True:
