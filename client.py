@@ -72,7 +72,7 @@ class Cracker:
         current_num = range_conversion.str_to_num(start)
         padding = len(start)
         
-        while not self.stop and start != stop:
+        while not self.stop and current != stop:
             if hashlib.md5(current.encode()).hexdigest() == md5:
                 found(md5, current)
                 return
