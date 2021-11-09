@@ -51,7 +51,7 @@ class Client:
 
     def found(self, md5, password):
         print(f"Found password {password}")
-        self.server.send(f"found,{self.id},{md5},{password}".encode())
+        self.server.send(f"{self.id},true,{md5},{password}".encode())
 
 class Cracker:
     def __init__(self):
