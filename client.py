@@ -55,6 +55,7 @@ class Client:
         self.server.send(f"{self.id},true,{md5},{password}".encode())
 
     def failed(self, md5):
+        print("Failed to find the password! Alerting the server.")
         self.server.send(f"{self.id},false,{md5},".encode())
 
 class Cracker:
