@@ -17,6 +17,7 @@ class Server:
 
     def add_new_range(self, start, stop, md5):
         self.ranges = [*self.ranges, *range_conversion.get_ranges(start, stop, 100, md5)]
+        print(f"Added range {start}-{stop} with md5: {md5}")
 
     def listen_for_new_connections(self):
         self.soc.bind(('localhost', 13370))
